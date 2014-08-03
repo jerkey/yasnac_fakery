@@ -15,40 +15,44 @@ void loop()
   if (digitalRead(CN1_SEN) && !cn1_sent) {
     delay(185);
     Serial.print("P");
-    delayMicroseconds(1000);
+    delay(2);
     Serial.print("+");
-    delayMicroseconds(1000);
+    delay(2);
     Serial.print("0");
-    delayMicroseconds(1000);
+    delay(2);
     Serial.print("0");
-    delayMicroseconds(1000);
+    delay(2);
     Serial.print("0");
-    delayMicroseconds(1000);
+    delay(2);
     Serial.print("0");
-    delayMicroseconds(1000);
+    delay(2);
     Serial.print("0");
-    delayMicroseconds(1000);
+    delay(2);
     Serial.print("\r");
+    delayMicroseconds(2470);
+    Serial.print("UUUUUUUUUUUUUUU");
     cn1_sent = true;
     }
   if (!digitalRead(CN1_SEN)) cn1_sent = false;
   if (digitalRead(CN2_SEN) && !cn2_sent) {
     delay(185);
     Serial.print("P");
-    delayMicroseconds(1000);
+    delay(2);
     Serial.print("+");
-    delayMicroseconds(1000);
+    delay(2);
     Serial.print("0");
-    delayMicroseconds(1000);
+    delay(2);
     Serial.print("0");
-    delayMicroseconds(1000);
+    delay(2);
     Serial.print("0");
-    delayMicroseconds(1000);
+    delay(2);
     Serial.print("0");
-    delayMicroseconds(1000);
+    delay(2);
     Serial.print("0");
-    delayMicroseconds(1000);
+    delay(2);
     Serial.print("\r");
+    delayMicroseconds(2470);
+    Serial.print("UUUUUUUUUUUUUUU");
     cn2_sent = true;
     }
   if (!digitalRead(CN2_SEN)) cn2_sent = false;
