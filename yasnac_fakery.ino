@@ -13,12 +13,42 @@ void setup()
 void loop()
 {
   if (digitalRead(CN1_SEN) && !cn1_sent) {
-    Serial.print("P+00000\r");
+    delay(185);
+    Serial.print("P");
+    delayMicroseconds(1000);
+    Serial.print("+");
+    delayMicroseconds(1000);
+    Serial.print("0");
+    delayMicroseconds(1000);
+    Serial.print("0");
+    delayMicroseconds(1000);
+    Serial.print("0");
+    delayMicroseconds(1000);
+    Serial.print("0");
+    delayMicroseconds(1000);
+    Serial.print("0");
+    delayMicroseconds(1000);
+    Serial.print("\r");
     cn1_sent = true;
     }
   if (!digitalRead(CN1_SEN)) cn1_sent = false;
   if (digitalRead(CN2_SEN) && !cn2_sent) {
-    Serial.print("P+00000\r");
+    delay(185);
+    Serial.print("P");
+    delayMicroseconds(1000);
+    Serial.print("+");
+    delayMicroseconds(1000);
+    Serial.print("0");
+    delayMicroseconds(1000);
+    Serial.print("0");
+    delayMicroseconds(1000);
+    Serial.print("0");
+    delayMicroseconds(1000);
+    Serial.print("0");
+    delayMicroseconds(1000);
+    Serial.print("0");
+    delayMicroseconds(1000);
+    Serial.print("\r");
     cn2_sent = true;
     }
   if (!digitalRead(CN2_SEN)) cn2_sent = false;
