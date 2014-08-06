@@ -32,7 +32,7 @@ void loop()
     Serial.print("0");
     delay(2);
     Serial.print("\r");
-    delayMicroseconds(2470);
+    delayMicroseconds(2470+693);
     sendIncrementalPulses(1,CN1_PB);
     cn1_sent = true;
     }
@@ -55,7 +55,7 @@ void loop()
     Serial.print("0");
     delay(2);
     Serial.print("\r");
-    delayMicroseconds(2470);
+    delayMicroseconds(2470+693);
     sendIncrementalPulses(1,CN2_PB);
     cn2_sent = true;
     }
@@ -63,17 +63,20 @@ void loop()
 }
 
 void sendIncrementalPulses(int pin1, int pin2) {
+  digitalWrite(pin1,HIGH);
+  digitalWrite(pin2,HIGH);
   pinMode(pin1,OUTPUT);
   pinMode(pin2,OUTPUT);
-  for (int i = 0; i < 89; i++) {
-    UCSR0B &= (255 - (1<<TXEN0));
+  UCSR0B &= (255 - (1<<TXEN0));
+  int count = 83; // how many pulses to make
+  for (int i = 0; i < count; i++) {
     digitalWrite(pin1,HIGH);
-    delayMicroseconds(43);
+    delayMicroseconds(38);
     digitalWrite(pin2,HIGH);
-    delayMicroseconds(43);
+    delayMicroseconds(38);
     digitalWrite(pin1,LOW);
-    delayMicroseconds(43);
-    digitalWrite(pin2,LOW);
-    delayMicroseconds(43);
+    delayMicroseconds(38);
+    if (i < (count - 1)) digitalWrite(pin2,LOW);
+    delayMicroseconds(38);
   }
 }
