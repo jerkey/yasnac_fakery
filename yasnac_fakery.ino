@@ -65,14 +65,15 @@ void loop()
 void sendIncrementalPulses(int pin1, int pin2) {
   pinMode(pin1,OUTPUT);
   pinMode(pin2,OUTPUT);
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 89; i++) {
+    UCSR0B &= (255 - (1<<TXEN0));
     digitalWrite(pin1,HIGH);
-    delayMicroseconds(500);
+    delayMicroseconds(43);
     digitalWrite(pin2,HIGH);
-    delayMicroseconds(500);
+    delayMicroseconds(43);
     digitalWrite(pin1,LOW);
-    delayMicroseconds(500);
+    delayMicroseconds(43);
     digitalWrite(pin2,LOW);
-    delayMicroseconds(500);
+    delayMicroseconds(43);
   }
 }
