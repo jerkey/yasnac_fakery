@@ -1,7 +1,9 @@
 #define CN1_SEN 8 // goes high when it wants serial data
 #define CN2_SEN 9 // goes high when it wants serial data
 #define CN1_PB 10 // PB pin
+
 #define CN2_PB 11 // PB pin
+#define CN2_PC 12 // PC pin
 
 #define TUNED43US 33 // how many "delayMicroseconds" to achieve 43uS actual time
 
@@ -15,8 +17,10 @@ void setup()
   Serial.begin(9600,SERIAL_7E1);
   digitalWrite(CN1_PB,HIGH);
   digitalWrite(CN2_PB,HIGH);
+  digitalWrite(CN2_PC,HIGH);
   pinMode(CN1_PB,OUTPUT);
   pinMode(CN2_PB,OUTPUT);
+  pinMode(CN2_PC,OUTPUT);
   delay(1000);
 }
 
@@ -44,10 +48,15 @@ void loop()
     digitalWrite(1,HIGH);
     pinMode(1,OUTPUT);
     UCSR0B &= (255 - (1<<TXEN0)); // change USART0 pin to be a GPIO again
+    // digitalWrite(CN1_PC,LOW);
     sendIncrementalPulses(1,CN1_PB);
     cn1_sent = true;
     }
-  if (!digitalRead(CN1_SEN)) cn1_sent = false;
+  if (!digitalRead(CN1_SEN)) {
+    cn1_sent = false;
+    digitalWrite(CN1_PB,HIGH);
+    //digitalWrite(CN1_PC,HIGH);
+  }
   if (digitalRead(CN2_SEN) && !cn2_sent) {
     Serial.begin(9600,SERIAL_7E1);
     delay(185);
@@ -70,10 +79,15 @@ void loop()
     digitalWrite(1,HIGH);
     pinMode(1,OUTPUT);
     UCSR0B &= (255 - (1<<TXEN0)); // change USART0 pin to be a GPIO again
+    digitalWrite(CN2_PC,LOW);
     sendIncrementalPulses(1,CN2_PB);
     cn2_sent = true;
     }
-  if (!digitalRead(CN2_SEN)) cn2_sent = false;
+  if (!digitalRead(CN2_SEN)) {
+    cn2_sent = false;
+    digitalWrite(CN2_PB,HIGH);
+    digitalWrite(CN2_PC,HIGH);
+  }
 }
 
 void sendIncrementalPulses(int pin1, int pin2) {
