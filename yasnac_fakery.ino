@@ -3,7 +3,7 @@
 #define CN1_PB 10 // PB pin
 #define CN2_PB 11 // PB pin
 
-#define TUNED43US 38 // how many "delayMicroseconds" to achieve 43uS actual time
+#define TUNED43US 33 // how many "delayMicroseconds" to achieve 43uS actual time
 
 boolean cn1_sent = false; // whether we have sent data for this one yet
 boolean cn2_sent = false; // whether we have sent data for this one yet
@@ -40,7 +40,9 @@ void loop()
     Serial.print("0");
     delay(2);
     Serial.print("\r");
-    delayMicroseconds(2470+693);
+    delayMicroseconds(2470+786);
+    digitalWrite(1,HIGH);
+    pinMode(1,OUTPUT);
     UCSR0B &= (255 - (1<<TXEN0)); // change USART0 pin to be a GPIO again
     sendIncrementalPulses(1,CN1_PB);
     cn1_sent = true;
@@ -64,7 +66,9 @@ void loop()
     Serial.print("0");
     delay(2);
     Serial.print("\r");
-    delayMicroseconds(2470+693);
+    delayMicroseconds(2470+786);
+    digitalWrite(1,HIGH);
+    pinMode(1,OUTPUT);
     UCSR0B &= (255 - (1<<TXEN0)); // change USART0 pin to be a GPIO again
     sendIncrementalPulses(1,CN2_PB);
     cn2_sent = true;
@@ -73,7 +77,7 @@ void loop()
 }
 
 void sendIncrementalPulses(int pin1, int pin2) {
-  state = 2; // binary state of pin1 (bit0) and pin2 (bit1)
+  state = 1; // which pin1 or pin2 to toggle next
   pulseSeq(30,pin1,pin2); // first
   pulseSeq(30,pin1,pin2); // second
   pulseSeq(30,pin1,pin2); // third
@@ -87,14 +91,14 @@ void sendIncrementalPulses(int pin1, int pin2) {
 
 void pulseSeq(int count, int pin1, int pin2) {
   for (int i = 0; i < count; i++) {
-    digitalWrite(pin1,state & 1);
-    digitalWrite(pin2,state & 2);
+    if (state == 1) digitalWrite(pin1,!digitalRead(pin1));
+    if (state == 2) digitalWrite(pin2,!digitalRead(pin2));
     delayMicroseconds(TUNED43US);
-    state += 1;
+    state = state ^ 3;
   }
-  digitalWrite(pin1,state & 1);
-  digitalWrite(pin2,state & 2);
+  if (state == 1) digitalWrite(pin1,!digitalRead(pin1));
+  if (state == 2) digitalWrite(pin2,!digitalRead(pin2));
   delayMicroseconds(TUNED43US);
-  delayMicroseconds(TUNED43US); // this is a double-length state
-  state += 1;
+  delayMicroseconds(TUNED43US+9); // this is a double-length state
+  state = state ^ 3;
 }
